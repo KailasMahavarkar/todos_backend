@@ -5,7 +5,7 @@ dotenv.config();
 const express = require("express");
 const connect = require("./utils/connect");
 const cors = require("cors");
-const todoRouter = require("./router");
+// const todoRouter = require("./router");
 const app = express();
 
 // middleware
@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors("*"));
 
-app.use("/tasks", todoRouter);
+// app.use("/tasks", todoRouter);
 
 app.get("/", (req, res)=>{
     return res.json({
