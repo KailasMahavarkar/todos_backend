@@ -11,36 +11,40 @@ const updateTodo = async (req, res) => {
 	// update todo by taskId -> returns single todo
 
 	// find todo by uuid
-	const findRes = await TodoModel.findOne({
-		_id: uuid,
-	});
+	try {
+		const findRes = await TodoModel.findOne({
+			_id: uuid,
+		});
 
-	if (findRes) {
-		// update subtodo under uuid
-		const updateRes = await TodoModel.updateOne(
-			{ _id: uuid },
-			{
-				$set: {
-					"todos.$[elem].completed": completed,
-				},
-			},
-			{
-				arrayFilters: [
-					{
-						"elem.taskId": taskId,
+		if (findRes) {
+			// update subtodo under uuid
+			const updateRes = await TodoModel.updateOne(
+				{ _id: uuid },
+				{
+					$set: {
+						"todos.$[elem].completed": completed,
 					},
-				],
-			}
-		);
+				},
+				{
+					arrayFilters: [
+						{
+							"elem.taskId": taskId,
+						},
+					],
+				}
+			);
 
-		if (updateRes) {
-			return res.status(200).send({
-				message: "Todo updated",
-			});
+			if (updateRes) {
+				return res.status(200).send({
+					message: "Todo updated",
+				});
+			}
 		}
+	} catch (error) {
+		console.log("error updating -->", error.message);
 	}
 
-	return res.status(500).send({ message: "Todo not updated" });
+	return res.status(500).send({ message: "updating todo caused fatal error" });
 };
 
 module.exports = updateTodo;

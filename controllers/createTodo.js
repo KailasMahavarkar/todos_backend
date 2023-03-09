@@ -9,13 +9,12 @@ const createTodo = async (req, res) => {
 	const message = req.body.message;
 	const completed = req.body.completed;
 
-    const newTaskId = uuidv4();
+	const newTaskId = uuidv4();
 	const todo = {
 		taskId: newTaskId,
 		message: message,
 		completed: completed,
 	};
-
 
 	// check if public uuid is in database
 	try {
@@ -60,8 +59,11 @@ const createTodo = async (req, res) => {
 				});
 			}
 		}
+
+		return res.status(400).send({ msg: "todo not created" });
 	} catch (error) {
-		return res.status(500).send({ msg: "Todo not created" });
+		console.log("error creating -->", error.message);
+		return res.status(500).send({ message: "todo create caused fatal error" });
 	}
 };
 

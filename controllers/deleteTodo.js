@@ -13,27 +13,33 @@ const deleteTodo = async (req, res) => {
 		_id: uuid,
 	});
 
-	if (findRes) {
-		// delete subtodo under uuid
-		const deleteRes = await TodoModel.updateOne(
-			{ _id: uuid },
-			{
-				$pull: {
-					todos: {
-						taskId: taskId,
+	try {
+		if (findRes) {
+			// delete subtodo under uuid
+			const deleteRes = await TodoModel.updateOne(
+				{ _id: uuid },
+				{
+					$pull: {
+						todos: {
+							taskId: taskId,
+						},
 					},
-				},
-			}
-		);
+				}
+			);
 
-		if (deleteRes) {
-			return res.status(200).send({
-				message: "Todo deleted",
-			});
+			if (deleteRes) {
+				return res.status(200).send({
+					message: "Todo deleted",
+				});
+			}
 		}
+
+        return res.status(400).send({ msg: "could not delete todo" });
+	} catch (error) {
+		console.log("error deleting -->", error.message);
+        return res.status(500).send({ message: "todo deleted caused fatal error" });
 	}
 
-	return res.status(500).send({ message: "Todo not deleted" });
 };
 
 module.exports = deleteTodo;

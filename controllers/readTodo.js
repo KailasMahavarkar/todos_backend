@@ -7,18 +7,25 @@ const readTodo = async (req, res) => {
 		return res.status(400).send({ message: "uuid not provided" });
 	}
 
-	const readResult = await TodoModel.findOne({ _id: uuid });
+	try {
+		const readResult = await TodoModel.findOne({ _id: uuid });
 
-	if (readResult) {
-		return res.status(200).send({
-			message: "Todo read",
-			data: {
-				todos: readResult.todos,
-			},
-		});
+		if (readResult) {
+			return res.status(200).send({
+				message: "Todo read",
+				data: {
+					todos: readResult.todos,
+				},
+			});
+		}
+
+		return res.status(400).send({ message: "could not read todo" });
+	} catch (error) {
+		console.log("error reading -->", error.message);
+		return res
+			.status(500)
+			.send({ message: "reading todo caused fatal error" });
 	}
-
-	return res.status(500).send({ message: "Todo not read" });
 };
 
 module.exports = readTodo;
