@@ -1,18 +1,10 @@
 A todo is a task that needs to be done, or might need to be done.
 
-# structure of todo
+>live
+- https://synctodo.netlify.app
 
+>structure of 'todos'
 ```json
-# a single todos structure
-todos = [
-    {
-        "taskid": "string",
-        "message": "string",
-        "completed": "boolean"
-    }
-]
-
-# usage
 todos = [
     {
         "taskid": "abc",
@@ -25,17 +17,21 @@ todos = [
         "completed": true
     }
 ]
+```
+>Features:
+1. user can save the todo
+2. mark task completed
+3. undo completed task
+4. delete task
+5. recover doto anywhere using unique identifier
 
-// read a single todo by uuid
-GET /todos/:uuid
+>API
+- create 	  -> POST   -> /tasks
+- read todo   -> GET    -> /tasks/:uuid/:taskid
+- update todo -> PATCH  -> /tasks/:uuid
+- delete todo -> DELETE -> /tasks/:uuid/:taskid (this deletes task within todo not todo itself)
 
-// create a new todo
-POST /todos
-
-// update a todo
-PUT /todos/:uuid
-
-// delete single todo by uuid
-DELETE /todos/:uuid/:taskId
-
+>Code
+- backend: https://github.com/KailasMahavarkar/todos_frontend
+- frontend: https://github.com/KailasMahavarkar/todos_frontend
 ```
